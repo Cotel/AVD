@@ -6,7 +6,8 @@ module Pract1.Pract1 (
     nthElement,
     nthElement',
     nthElement'',
-    strToAscii
+    strToAscii,
+    positionInList
 ) where
 
 import Data.Char
@@ -60,7 +61,7 @@ nthElement' (x:xs) y = nthElement' xs (y-1)
 -- En este caso tiene mas sentido comprobar que el entero es <= que la 
 -- longitud de la lista, pero @nhemesy queria usar Maybe
 
-nthElement'' :: [a] -> Int -> Maybe(a)
+nthElement'' :: [a] -> Int -> Maybe a
 nthElement'' [] _ = Nothing
 nthElement'' (x:xs) 0 = Just x
 nthElement'' (x:xs) y = nthElement'' xs (y-1)
@@ -71,4 +72,14 @@ nthElement'' (x:xs) y = nthElement'' xs (y-1)
 -- devuelva la lista de códigos ASCII que lo representan. Se debe usar la función map.
 
 strToAscii :: String -> [Int]
-strToAscii str = map ord str
+strToAscii x = map ord x
+
+-- Experimentos
+-- Metodo que dado un elemento debe devolver su posicion en una lista
+
+positionInList :: Eq a => [a] -> a -> Maybe Int
+positionInList xs elem = positionInList' xs elem 0
+
+positionInList' :: Eq a => [a] -> a -> Int -> Maybe Int
+positionInList' (x:xs) elem pos = if x == elem then Just pos else positionInList' xs elem (pos+1)
+positionInList' [] _ _ = Nothing
