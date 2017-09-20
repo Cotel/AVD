@@ -25,4 +25,3 @@ elementonpos xs y = elementonpos (tail xs) (y-1)
 --Ejercicio 6
 stringord :: String -> [Int]
 stringord x = map (ord) x
-
