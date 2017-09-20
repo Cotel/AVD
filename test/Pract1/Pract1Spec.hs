@@ -1,6 +1,7 @@
 module Pract1.Pract1Spec where
 
 import Test.Hspec
+import Test.QuickCheck
 import Pract1.Pract1
 
 spec = describe "Pract1 tests" $ do
@@ -30,3 +31,18 @@ spec = describe "Pract1 tests" $ do
 
     it "strToAscii returns vector of ASCII codes of string" $
         strToAscii "ABCxyz" `shouldBe` ([65, 66, 67, 120, 121, 122] :: [Int])
+
+    -- Experimentos
+
+    it "positionInList returns Just n if element is found in position n" $
+        positionInList [1,2,3,4] 3 `shouldBe` (Just 2 :: Maybe Int)
+
+    it "isZero is False for every number which is not 0" $
+        property prop_isZeroReturnsFalseForEveryNumberExceptZero
+
+
+prop_isZeroReturnsFalseForEveryNumberExceptZero :: Property
+prop_isZeroReturnsFalseForEveryNumberExceptZero = forAll genNonZero $ \x -> not (isZero x)
+
+genNonZero :: Gen Int
+genNonZero = (arbitrary :: Gen Int) `suchThat` (/= 0)

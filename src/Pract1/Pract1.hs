@@ -6,7 +6,8 @@ module Pract1.Pract1 (
     nthElement,
     nthElement',
     nthElement'',
-    strToAscii
+    strToAscii,
+    positionInList
 ) where
 
 import Data.Char
@@ -72,3 +73,13 @@ nthElement'' (x:xs) y = nthElement'' xs (y-1)
 
 strToAscii :: String -> [Int]
 strToAscii x = map ord x
+
+-- Experimentos
+-- Metodo que dado un elemento debe devolver su posicion en una lista
+
+positionInList :: Eq a => [a] -> a -> Maybe Int
+positionInList xs elem = positionInList' xs elem 0
+
+positionInList' :: Eq a => [a] -> a -> Int -> Maybe Int
+positionInList' (x:xs) elem pos = if x == elem then Just pos else positionInList' xs elem (pos+1)
+positionInList' [] _ _ = Nothing
