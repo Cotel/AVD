@@ -18,10 +18,14 @@ equalzerocond :: Int -> Bool
 equalzerocond x = if x == 0 then True else False
 
 --Ejercicio 5
-elementonpos :: [a]-> Int -> a
-elementonpos (x:xs) 0 = x
+elementonpos :: [a]-> Int -> Maybe(a)
+elementonpos [] y = Nothing
+elementonpos (x:xs) 0 = Just x
 elementonpos xs y = elementonpos (tail xs) (y-1)  
 
 --Ejercicio 6
 stringord :: String -> [Int]
 stringord x = map (ord) x
+
+
+
