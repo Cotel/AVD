@@ -60,7 +60,7 @@ nthElement' (x:xs) y = nthElement' xs (y-1)
 -- En este caso tiene mas sentido comprobar que el entero es <= que la 
 -- longitud de la lista, pero @nhemesy queria usar Maybe
 
-nthElement'' :: [a] -> Int -> Maybe(a)
+nthElement'' :: [a] -> Int -> Maybe a
 nthElement'' [] _ = Nothing
 nthElement'' (x:xs) 0 = Just x
 nthElement'' (x:xs) y = nthElement'' xs (y-1)
@@ -71,4 +71,4 @@ nthElement'' (x:xs) y = nthElement'' xs (y-1)
 -- devuelva la lista de códigos ASCII que lo representan. Se debe usar la función map.
 
 strToAscii :: String -> [Int]
-strToAscii str = map ord str
+strToAscii x = map ord x
