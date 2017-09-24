@@ -37,6 +37,12 @@ spec = describe "Pract1 tests" $ do
     it "positionInList returns Just n if element is found in position n" $
         positionInList [1,2,3,4] 3 `shouldBe` (Just 2 :: Maybe Int)
 
+    it "findPairThatSums returns Just (a, a) if finds a pair of numbers which sum n" $
+        findPairThatSums [1,3,2,4,3,4] 8 `shouldBe` (Just (4,4) :: Maybe (Int, Int))
+
+    it "findPairThatSums returns Nothing if it doesn't find a pair numbers with sum n" $
+        findPairThatSums [1,2,3,4] 8 `shouldBe` (Nothing :: Maybe (Int, Int))
+
     it "isZero is False for every number which is not 0" $
         property prop_isZeroReturnsFalseForEveryNumberExceptZero
 
@@ -46,3 +52,6 @@ prop_isZeroReturnsFalseForEveryNumberExceptZero = forAll genNonZero $ \x -> not 
 
 genNonZero :: Gen Int
 genNonZero = (arbitrary :: Gen Int) `suchThat` (/= 0)
+
+main :: IO ()
+main = hspec spec
