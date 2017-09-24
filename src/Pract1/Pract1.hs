@@ -7,10 +7,12 @@ module Pract1.Pract1 (
     nthElement',
     nthElement'',
     strToAscii,
-    positionInList
+    positionInList,
+    findPairThatSums
 ) where
 
 import Data.Char
+import Data.List
 
 -- Ejercicio 1
 
@@ -83,3 +85,19 @@ positionInList xs elem = positionInList' xs elem 0
 positionInList' :: Eq a => [a] -> a -> Int -> Maybe Int
 positionInList' (x:xs) elem pos = if x == elem then Just pos else positionInList' xs elem (pos+1)
 positionInList' [] _ _ = Nothing
+
+-- Metodo que dado un numero y una lista de numeros devuelva la primera pareja
+-- de numeros de la lista que suman el primer parametro.
+-- Sacado de esta prueba de entrevista para Google https://www.youtube.com/watch?v=XKu_SEDAykw
+
+findPairThatSums :: (Num a, Ord a, Eq a) => [a] -> a -> Maybe (a, a)
+findPairThatSums [] _ = Nothing
+findPairThatSums [x] _ = Nothing
+findPairThatSums list sum
+    | x + y == sum = Just (x, y)
+    | x + y < sum = findPairThatSums (tail ordList) sum
+    | otherwise = findPairThatSums (init ordList) sum
+        where 
+            x = head ordList
+            y = last ordList
+            ordList = sort list
