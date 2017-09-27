@@ -143,6 +143,13 @@ miOrderedList = oneof [ return [],
 
 -- Ejercicio 12
 -- Otra forma de crear el generador para dar mas riqueza es usar "frequency"
+-- Se genera un numero aleatorio n y creamos una funcion local que dado un numero n,
+-- devuelve una lista vacia (1 de cada 5 veces) o hace uso de la recursion para generar
+-- otro numero aleatorio m, le suma n y vuelve a llamarse a si mismo hasta que obtiene una lista vacia,
+-- en cuyo caso hace append de todos los valores obtenidos.
+-- Las listas no repiten elementos ya que siempre se suma un numero aleatorio al anterior
+-- en la pila de llamadas recursivas empezando desde n.
+-- De esta forma obtenemos una lista ordenada ascendentemente.
 
 miOrderedList2 :: (Num a, Arbitrary a) => Gen [a]
 miOrderedList2 = do
