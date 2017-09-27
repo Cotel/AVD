@@ -22,8 +22,6 @@ spec = describe "Pract2 tests" $ do
     quickCheck prop_miInsert
 
 
--- Apartado 4 -> Definicion de propiedades en Quickcheck
-
 -- Ejercicios 1, 2, 3, 4 y 5
 -- Si quitamos la signature de las funciones los tests pasan aunque
 -- escribamos mal las funciones a proposito porque los inputs random generados son
@@ -51,7 +49,7 @@ prop_MaxLe x y = x <= y ==> max x y == y
 
 -- Ejercicio 7
 -- La siguiente propiedad hace que QuickCheck se rinda antes de encontrar solucion
--- pues es capaz de generar casos de prueba que satisfagan la condicion
+-- pues no es capaz de generar casos de prueba que satisfagan la condicion
 
 prop_Ordered :: Int -> [Int] -> Property
 prop_Ordered x ys = miOrdered ys ==> miInsert x ys == sort (x:ys)
