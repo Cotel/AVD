@@ -5,6 +5,7 @@ A repository for keeping the produced code for AVD laboratories.
 ## Sessions
 
 * [Session 1](/src/Pract1/Pract1.hs) - [Tests](/test/Pract1/Pract1Spec.hs)
+* [Session 2](/test/Pract2/Pract2Spec.hs) - [Tests](test/Pract2/Pract2Spec.hs)
 
 ## Running tests
 
