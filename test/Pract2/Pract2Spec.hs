@@ -7,19 +7,29 @@ import Data.List
 
 spec = describe "Pract2 tests" $ do
   it "Exercise 1.1: reverse unit is equal to unit" $
-    quickCheck prop_RevUnit
+    property prop_RevUnit
   it "Exercise 1.2: reverse applied to list is equal to reversed list (Is this okay?)" $
-    quickCheck prop_RevApp
+    property prop_RevApp
   it "Exercise 1.3: reverse applied to reversed list is equal to list" $
-    quickCheck prop_RevRev
+    property prop_RevRev
   it "Exercise 6: Max takes y every time x is lower" $
-    quickCheck prop_MaxLe
+    property prop_MaxLe
   it "Exercise 7: miInsert always returns an ascending ordered list" $
-    quickCheck collectEx
+    quickCheck collectEx -- Esta propiedad falla porque QuickCheck no es capaz de generar casos de prueba
   it "Exercise 8: Cycle is equal to concatenate with parameter itself" $
-    quickCheck prop_DoubleCycle
+    property prop_DoubleCycle
   it "Exercise 11: miInsert always returns an ordered list" $
-    quickCheck prop_miInsert
+    property prop_miInsert
+  it "Exercise 15: Queue empty function always returns and empty queue" $
+    property prop_emptyAlwaysReturnsEmptyQueue
+  it "Exercise 15: isEmpty always returns True if Queue is empty" $
+    property prop_isEmptyAlwaysReturnsTrueIfEmptyQueue
+  it "Exercise 15: add always appends an element to the right of the Queue" $
+    property prop_addAlwaysAppendsAnElementToTheRightOfTheQueue
+  it "Exercise 15: front always returns the element to the left of the Queue" $
+    property prop_frontAlwaysReturnsTheElementToTheLeftOfTheQueueIfQueueIsNonEmpty
+  it "Exercise 15: remove always remove the first element to the left of the Queue" $
+    property prop_removeAlwaysRemoveTheFirstElementToTheLeftOfTheQueueIfQueueIsNonEmpty
 
 
 -- Ejercicios 1, 2, 3, 4 y 5
@@ -103,7 +113,7 @@ collectEx x ys = miOrdered ys ==> collect (length ys) $ miInsert x ys == sort (x
 -- Es una version mejorada para prop_Ordered.
 
 prop_miInsert :: Int -> Property
-prop_miInsert x = forAll miOrderedList2 $ \xs -> miOrdered (miInsert x xs)
+prop_miInsert x = forAll customOrderedList $ \xs -> miOrdered (miInsert x xs)
 
 -- Se lee de la siguiente forma: Para toda lista ordenada generada, la lista sigue ordenada
 -- despues de insertar un elemento con el metodo que quiero testear (insercion ordenada de elementos).
@@ -160,3 +170,37 @@ miOrderedList2 = do
                                                       m <- arbitrary
                                                       ns <- listFrom (n + abs m)
                                                       return (n:ns))]
+
+
+-- Ejercicio 13
+-- Realizar un generador de listas ordenadas con sort.
+-- Los resultados son parecidos a los del ejercicio anterior. La unica diferencia
+-- es que el codigo es menos verboso.
+
+customOrderedList :: (Ord a, Arbitrary a) => Gen [a]
+customOrderedList = frequency [ (1, return []),
+                            (4, do
+                              x <- arbitrary
+                              xs <- customOrderedList
+                              return $ sort (x:xs))]
+
+-- Ejercicio 15
+-- Definir propiedades para las funciones del tipo Queue
+
+prop_emptyAlwaysReturnsEmptyQueue :: Bool
+prop_emptyAlwaysReturnsEmptyQueue = isEmpty empty
+
+prop_isEmptyAlwaysReturnsTrueIfEmptyQueue :: Queue Int -> Bool
+prop_isEmptyAlwaysReturnsTrueIfEmptyQueue q = if null q then isEmpty q else not (isEmpty q)
+
+prop_addAlwaysAppendsAnElementToTheRightOfTheQueue :: Int -> Queue Int -> Bool
+prop_addAlwaysAppendsAnElementToTheRightOfTheQueue n q = add n q == q ++ [n]
+
+prop_frontAlwaysReturnsTheElementToTheLeftOfTheQueueIfQueueIsNonEmpty :: Property
+prop_frontAlwaysReturnsTheElementToTheLeftOfTheQueueIfQueueIsNonEmpty = forAll genNonEmptyQueue $ \x -> front x == head x
+
+prop_removeAlwaysRemoveTheFirstElementToTheLeftOfTheQueueIfQueueIsNonEmpty :: Property
+prop_removeAlwaysRemoveTheFirstElementToTheLeftOfTheQueueIfQueueIsNonEmpty = forAll genNonEmptyQueue $ \x -> remove x == tail x
+
+genNonEmptyQueue :: Gen [Int]
+genNonEmptyQueue = arbitrary `suchThat` (not . null)
